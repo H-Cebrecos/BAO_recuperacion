@@ -1,7 +1,7 @@
 # BAO_recuperacion
 
 TODO:
-* arreglarlo en general (no funciona)
+* arreglar que solo coloque una pieza.
 
 * reacer la funcion de evaluar huecos por algo mas eficiente.
 

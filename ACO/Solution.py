@@ -2,7 +2,7 @@ from  Common.Piece import Piece
 from  Common.Choice import Choice
 from Pheromone import Pheromone
 import random
-
+from typing import Callable
 import numpy as np
 
 #This class represents a complete
@@ -13,23 +13,30 @@ class Solution:
         self.pieces = pieces
         #the repeated reference approach to initialization
         #provides a speedup of >300 (99.67% inprovement) over iteration for very large boards (tested with 3000x3000 board)
-        self.board = [[False] * x_dim] * y_dim
+        self.board = [[False] * x_dim for _ in range(y_dim)]
         self.used_pieces = [False] * max_pieces
-        self.pieces_order = [0] * max_pieces
-        self.pieces_pos = [[[0,0]]* 2] * max_pieces
+        self.pieces_order = [-1] * max_pieces
+        self.pieces_pos = [[[-1,-1]]* 2 for i in range(max_pieces)]
 
 
+    #! this is broken.
     def __get_candidates(self) -> list:
         Candidates = []
         for candidate in self.pieces:
             if not self.does_use_piece(candidate):
                 choice = self.get_Choice(candidate)
                 if choice.x_pos != -1:
-                    Candidates.append(choice)               
+                    Candidates.append(choice)       
         return Candidates
     
-    
-    
+    def get_Choice (self, piece: Piece) -> Choice:
+        for x in range(self.x_dim):  # Recorre todas las posiciones del espacio
+            for y in range(self.y_dim):
+                posible = Choice(piece, x, y)
+                if self.does_Choice_fit(posible):
+                    return Choice(piece, x, y)
+        return Choice(piece, -1, -1)
+
     
     
     
@@ -45,12 +52,12 @@ class Solution:
                 return Candidates[i]
         return False
     
-    def construct_solution(Pheromones: list, x_dim: int, y_dim: int, pieces: list, max_pieces: int, alpha: float, beta: float):
+    def construct_solution(Pheromones: list, x_dim: int, y_dim: int, pieces: list, max_pieces: int, alpha: float, beta: float, heuristic: Callable[[Choice], float]):
         solution = Solution(x_dim, y_dim, pieces, max_pieces)
         Candidates = solution.__get_candidates() #candidates are always valid
         order = 0
         while (len(Candidates) > 0):
-            Probabilities = Pheromone.calculate_probabilities(Candidates, Pheromones, order, alpha, beta, x_dim, y_dim)
+            Probabilities = Pheromone.calculate_probabilities(Candidates, Pheromones, order, alpha, beta, x_dim, y_dim, heuristic)
             choice = Solution.__random_choice(Candidates, Probabilities)
             if choice != False:
                 solution.place_Choice(choice, order)
@@ -70,18 +77,15 @@ class Solution:
                     return False
         return True
     
-    def get_Choice (self, piece: Piece) -> Choice:
-        for i in range(self.x_dim):  # Recorre todas las posiciones del espacio
-            for j in range(self.y_dim):
-                posible = Choice(piece, i, j)
-                if self.does_Choice_fit(posible):
-                    return Choice(piece, i, j)
-        return Choice(piece, -1, -1)
+
                 
     def place_Choice(self, choice: Choice, order: int):
-        for i in range(choice.piece.x_dim):
-            for j in range(choice.piece.y_dim):
-                self.board[choice.x_pos + i][choice.y_pos + j] = True
+        for y in range(choice.piece.y_dim):
+            for x in range(choice.piece.x_dim):
+                x_pos = choice.x_pos + x
+                y_pos = choice.y_pos + y
+                self.board[x_pos][y_pos] = True
+                
         self.used_pieces[self.pieces.index(choice.piece)] = True
         self.pieces_order[self.pieces.index(choice.piece)] = order
         self.pieces_pos[self.pieces.index(choice.piece)] = [[choice.x_pos,choice.y_pos],[choice.x_pos + choice.piece.x_dim-1,choice.y_pos + choice.piece.y_dim-1]]
@@ -106,7 +110,7 @@ class Solution:
     
     def huecos (self) -> list:
         return []
-    #    board_copy = copy.deepcopy(self.board)
+    #     _copy = copy.deepcopy(self.board)
     #    array = []
     #    for i in range(self.x_dim):
     #        for j in range(self.y_dim):
@@ -124,27 +128,26 @@ class Solution:
         return value
     
     def printSol (self):
-        board = np.array(self.board, dtype=int)
+        board = np.array([[0]*self.x_dim] * self.y_dim)
         
-        print("ocupancy:\n")
-        print(board)
+        
         print('\n\n')
-        print("pieces:\n")
+        print("pieces:")
         for y in range (self.y_dim):
             #print('|', end='')  
             for x in range (self.x_dim):
-                if self.piece_in_pos(x, y) != -1:
-                    board[x][y] = self.piece_in_pos(x, y) + 1#print(' ',"{:03d}".format(self.piece_in_pos(j, i)), end='')
+                piece = self.piece_in_pos(x, y)
+                if  piece != -1:
+                    board[y][x] = piece + 1 #print(' ',"{:03d}".format(self.piece_in_pos(j, i)), end='')
                 else:
-                    board[x][y] = 0
+                    board[y][x] = 0
                     #print("  ·  ", end= '')
             #print('|')    
 
         i = 0
         print(board)
-        
-        
+        print('\n\n')
         
         for piece in self.pieces:
-            print(i + 1, piece.x_dim, piece.y_dim)
+            print("piece ",i + 1, ' (',piece.x_dim, ', ',piece.y_dim, ')', sep='')
             i = i + 1
