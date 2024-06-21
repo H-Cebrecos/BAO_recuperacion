@@ -4,7 +4,7 @@ from Common.heuristic import heuristic
 class Pheromone:
     def __init__(self, max_pieces: int):
         self.placed = 1 #considero si esta colocado o no como una feromona
-        self.placeOrder = [1 for i in range(max_pieces)] #cada posicion indica el orden en el que se coloca la pieza
+        self.placeOrder = [1] * max_pieces #cada posicion indica el orden en el que se coloca la pieza
     
     def initialize_pheromones(max_pieces: int): #creo un array donde cada pieza tiene una pos y un array de feromona
         Pheromones = [Pheromone(max_pieces) for i in range(max_pieces)]
