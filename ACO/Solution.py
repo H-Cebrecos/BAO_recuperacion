@@ -47,10 +47,11 @@ class Solution:
     
     
     def __random_choice(Candidates, Probabilities):
-        for i in range(len(Candidates)):
-            if random.random() < Probabilities[i]: #good option for experimenting an using other choosing algos
-                return Candidates[i]
-        return False
+        while True:
+            for i in range(len(Candidates)):
+                if random.random() < Probabilities[i]: #good option for experimenting an using other choosing algos
+                    return Candidates[i]
+            
     
     def construct_solution(Pheromones: list, x_dim: int, y_dim: int, pieces: list, max_pieces: int, alpha: float, beta: float, heuristic: Callable[[Choice], float]):
         solution = Solution(x_dim, y_dim, pieces, max_pieces)
@@ -59,12 +60,10 @@ class Solution:
         while (len(Candidates) > 0):
             Probabilities = Pheromone.calculate_probabilities(Candidates, Pheromones, order, alpha, beta, x_dim, y_dim, heuristic)
             choice = Solution.__random_choice(Candidates, Probabilities)
-            if choice != False:
-                solution.place_Choice(choice, order)
-                Candidates = solution.__get_candidates()
-                order = order + 1
-                
-                return solution
+            solution.place_Choice(choice, order)
+            Candidates = solution.__get_candidates()
+            order = order + 1  
+        return solution
 
     def does_Choice_fit(self, choice: Choice) -> bool:
         if choice.piece.x_dim + choice.x_pos > self.x_dim:

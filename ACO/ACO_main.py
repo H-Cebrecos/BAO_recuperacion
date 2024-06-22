@@ -54,7 +54,8 @@ def ACO(n_ants, iterations, seed, alpha, beta, max_pieces: int, max_size: int, x
 
 def main():
     #for i in tqdm.tqdm(range(100), desc="runs"):
-        sol: Solution.Solution = ACO(n_ants=1, iterations=1, seed=12, alpha=0.6, beta=0.5, max_pieces=7, max_size=10, x_dim=30, y_dim=20, heuristic=heuristic1)
+        sol: Solution.Solution = ACO(n_ants=1, iterations=1
+                                     , seed=12, alpha=0.6, beta=0.5, max_pieces=10, max_size=10, x_dim=20, y_dim=20, heuristic=heuristic1)
         sol.printSol()
         #pieces = Piece.generate_random_pieces(6, 3)
         #solution = Solution(5, 10, pieces, 6)
