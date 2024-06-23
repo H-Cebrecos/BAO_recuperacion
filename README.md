@@ -1,15 +1,18 @@
 # BAO_recuperacion
 
 TODO:
-* arreglar que solo coloque una pieza.
+* ~~arreglar que solo coloque una pieza.~~
 
-* reacer la funcion de evaluar huecos por algo mas eficiente.
+* ~~reacer la funcion de evaluar huecos por algo mas eficiente.~~
 
-* ~~cronometrar todas las funciones y ver cual es la que
-realentiza tanto.~~
+* ~~cronometrar todas las funciones y ver cual es la que realentiza tanto.~~
 
-* añadir semillas a la parte aleatoria.
+* ~~añadir semillas a la parte aleatoria.~~
 
 * leerse otra vez los comentarios de la entrega y    arreglar lo que falte.
 
+* al aco se le deverian pasar las piezas para que lo solucione, no tiene sentido ahora mismo.
+
 * todo lo de GA
+
+* en evaluar alpha beta imprimir la recomendación.

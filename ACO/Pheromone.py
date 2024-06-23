@@ -1,5 +1,6 @@
 from typing import Callable
 from Common.Choice import Choice
+from Common.fitness import evaluate_fitness
 
 #This class represents the pheromones.
 class Pheromone:
@@ -50,7 +51,7 @@ class Pheromone:
         #Pheromones affected by pheromone amount
         #Fittnes of solution multiply by 0.7
         for tempSol in Solution_list:
-            tempFit = Pheromone.clampOf100(tempSol.evaluate_fitness() * 0.3)
+            tempFit = Pheromone.clampOf100(evaluate_fitness(tempSol.board, tempSol.x_dim, tempSol.y_dim) * 0.3)
             for tempPieza in range(max_pieces):
                 if(tempSol.does_use_piece(pieces[tempPieza])):
                     New_Pheromones[tempPieza].placed = Pheromone.clampOf100(New_Pheromones[tempPieza].placed + tempFit)

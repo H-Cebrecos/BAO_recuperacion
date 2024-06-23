@@ -47,10 +47,10 @@ class Solution:
     
     
     def __random_choice(Candidates, Probabilities):
-        while True:
-            for i in range(len(Candidates)):
-                if random.random() < Probabilities[i]: #good option for experimenting an using other choosing algos
-                    return Candidates[i]
+        for i in range(len(Candidates)):
+            if random.random() < Probabilities[i]: #good option for experimenting an using other choosing algos
+                return Candidates[i]
+        return Candidates[random.randint(0, len(Candidates)-1)] #program keep hanging while selectign a candidate.
             
     
     def construct_solution(Pheromones: list, x_dim: int, y_dim: int, pieces: list, max_pieces: int, alpha: float, beta: float, heuristic: Callable[[Choice], float]):
@@ -62,7 +62,7 @@ class Solution:
             choice = Solution.__random_choice(Candidates, Probabilities)
             solution.place_Choice(choice, order)
             Candidates = solution.__get_candidates()
-            order = order + 1  
+            order = order + 1
         return solution
 
     def does_Choice_fit(self, choice: Choice) -> bool:
@@ -103,28 +103,6 @@ class Solution:
                     return i
             i = i + 1
         return -1
-
-   
-
-    
-    def huecos (self) -> list:
-        return []
-    #     _copy = copy.deepcopy(self.board)
-    #    array = []
-    #    for i in range(self.x_dim):
-    #        for j in range(self.y_dim):
-    #            if board_copy[i][j] == 0:
-    #                board_copy[i][j] = 1
-    #                array.append(Solution.__explore_adyacent(board_copy, i, j))
-    #    return array
-
-    def evaluate_fitness(self) -> float: 
-        espacios = self.huecos()
-        value = 100
-        value = value - len(espacios) * 5 #penalizar numero de huecos
-        for hueco in espacios:
-            value = value - (1/hueco) * 3
-        return value
     
     def printSol (self):
         board = np.array([[0]*self.x_dim] * self.y_dim)
