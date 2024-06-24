@@ -5,10 +5,10 @@ from Common.fitness import evaluate_fitness
 #This class represents the pheromones.
 class Pheromone:
     def __init__(self, max_pieces: int):
-        self.placed = 1.0 #considero si esta colocado o no como una feromona
-        self.placeOrder = [1.0] * max_pieces #cada posicion indica el orden en el que se coloca la pieza
+        self.placed = 1.0                       #represents the binary choice of usign or not a piece.
+        self.placeOrder = [1.0] * max_pieces    #represents the best order in which to pick the pieces.
     
-    def initialize_pheromones(max_pieces: int): #creo un array donde cada pieza tiene una pos y un array de feromona
+    def initialize_pheromones(max_pieces: int):
         Pheromones = [Pheromone(max_pieces) for i in range(max_pieces)]
         return Pheromones
     
@@ -19,6 +19,7 @@ class Pheromone:
             dividend.append(pow((Pheromones[i].placed * Pheromones[i].placeOrder[order]), alpha) * pow(heuristic(Candidates[i], x_dim, y_dim),beta))
             sum += dividend[i]
 
+        #avoid dividing by zero.
         if sum == 0:
             sum = 0.000001
         for j in dividend:

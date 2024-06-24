@@ -11,8 +11,6 @@ TODO:
 
 * leerse otra vez los comentarios de la entrega y    arreglar lo que falte.
 
-* al aco se le deverian pasar las piezas para que lo solucione, no tiene sentido ahora mismo.
+* ~~al aco se le deverian pasar las piezas para que lo solucione, no tiene sentido ahora mismo.~~
 
 * todo lo de GA
-
-* en evaluar alpha beta imprimir la recomendación.
