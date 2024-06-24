@@ -15,14 +15,14 @@ def evaluate_variation_alpha_beta(tests: int, runs: int, alpha: float, beta: flo
     ab_i = []
     ab_d = []
     tests_bar = tqdm.tqdm(range(tests), desc="Tests")
-    for i in range(tests):
+    for j in tests_bar:
         #print(f"test {i + 1}:\n")
-        random.seed(i)
+        random.seed(j)
         pieces = Piece.generate_random_pieces(30, 10)
         
         #print("default")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
             sol = ACO(n_ants=10, iterations=10, alpha=alpha, beta=beta, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
@@ -31,7 +31,7 @@ def evaluate_variation_alpha_beta(tests: int, runs: int, alpha: float, beta: flo
         
         #print(f"increase of {increment} in alpha")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
             sol = ACO(n_ants=10, iterations=10, alpha=alpha+increment, beta=beta, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
@@ -40,7 +40,7 @@ def evaluate_variation_alpha_beta(tests: int, runs: int, alpha: float, beta: flo
         
         #print(f"decrease of {-increment} in alpha")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
             sol = ACO(n_ants=10, iterations=10, alpha=alpha-increment, beta=beta, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
@@ -49,7 +49,7 @@ def evaluate_variation_alpha_beta(tests: int, runs: int, alpha: float, beta: flo
         
         #print(f"increase of {increment} in beta")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
             sol = ACO(n_ants=10, iterations=10, alpha=alpha, beta=beta+increment, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
@@ -58,7 +58,7 @@ def evaluate_variation_alpha_beta(tests: int, runs: int, alpha: float, beta: flo
         
         #print(f"decrease of {-increment} in beta")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
             sol = ACO(n_ants=10, iterations=10, alpha=alpha, beta=beta-increment, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
@@ -67,7 +67,7 @@ def evaluate_variation_alpha_beta(tests: int, runs: int, alpha: float, beta: flo
         
         #print(f"increase of {increment} in both")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
             sol = ACO(n_ants=10, iterations=10, alpha=alpha+increment, beta=beta+increment, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
@@ -76,7 +76,7 @@ def evaluate_variation_alpha_beta(tests: int, runs: int, alpha: float, beta: flo
         
         #print(f"decrease of {increment} in both")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
             sol = ACO(n_ants=10, iterations=10, alpha=alpha-increment, beta=beta-increment, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
@@ -94,36 +94,57 @@ def evaluate_variation_alpha_beta(tests: int, runs: int, alpha: float, beta: flo
     print(f"average over tests with alpha {alpha-increment} and beta {beta-increment} is: {sum(ab_d)/len(ab_d)}")
     
     
-def evaluate_more_ants_or_iterations(tests: int, runs: int, ants: int, iterations: int):
+def evaluate_more_ants_or_iterations(tests: int, runs: int, ants: int, iterations: int, heuristic):
     print(f"doing {runs} runs of {iterations} iterations with {ants} ants with {tests} different seeds.\n")
-    for i in range(tests):
-        print(f"test {i + 1}:\n")
-        random.seed(i)
+    for j in range(tests):
+        print(f"test {j + 1}:\n")
+        random.seed(j)
         pieces = Piece.generate_random_pieces(30, 10)
         
         print("default")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
-            sol = ACO(n_ants=ants, iterations=iterations, alpha=0.6, beta=0.5, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
+            sol = ACO(n_ants=ants, iterations=iterations, alpha=0.6, beta=0.5, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
         print("average fitness of the solution:",average)
         
         print("double ants")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
-            sol = ACO(n_ants=ants*2, iterations=iterations, alpha=0.6, beta=0.5, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
+            sol = ACO(n_ants=ants*2, iterations=iterations, alpha=0.6, beta=0.5, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
         print("average fitness of the solution:",average)
 
         print("double iterations")
         fitnesses = []
-        for i in tqdm.tqdm(range(runs), desc="runs",leave=False):
-            sol = ACO(n_ants=ants, iterations=iterations*2, alpha=0.6, beta=0.5, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
+            sol = ACO(n_ants=ants, iterations=iterations*2, alpha=0.6, beta=0.5, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic)
             fitnesses.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
         average = sum(fitnesses) / len(fitnesses) if fitnesses else 0
         print("average fitness of the solution:",average)
 
-#evaluate_more_ants_or_iterations(tests=3, runs=6, ants=10, iterations=10)ç
-evaluate_variation_alpha_beta(tests=3, runs= 6, alpha=0.2, beta=0.2, increment=0.2)
+
+def evaluate_heuristics(tests: int, runs: int, ants: int, iterations: int):
+    h_1 = []
+    h_2 = []
+    tests_bar = tqdm.tqdm(range(tests), desc="Tests")
+    for i in tests_bar:
+        random.seed(i)
+        pieces = Piece.generate_random_pieces(30, 10)
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
+            sol = ACO(n_ants=ants, iterations=iterations, alpha=0.6, beta=0.5, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic1)
+            h_1.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
+
+        for _ in tqdm.tqdm(range(runs), desc="runs",leave=False):
+            sol = ACO(n_ants=ants, iterations=iterations, alpha=0.6, beta=0.5, max_pieces=30, pieces=pieces, x_dim=20, y_dim=20, heuristic=heuristic2)
+            h_2.append(evaluate_fitness(sol.board, sol.x_dim, sol.y_dim))
+
+    average_1 = sum(h_1) / len(h_1) if h_1 else 0
+    print("average fitness with heuristic 1:",average_1)
+    average_2 = sum(h_2) / len(h_2) if h_2 else 0
+    print("average fitness with heuristic 2:",average_2)
+evaluate_heuristics(10,10,10,10)
+#evaluate_more_ants_or_iterations(tests=3, runs=6, ants=10, iterations=10)
+#evaluate_variation_alpha_beta(tests=3, runs= 6, alpha=0.3, beta=0.6, increment=0.2)

@@ -58,7 +58,7 @@ class Solution:
         Candidates = solution.__get_candidates() #candidates are always valid
         order = 0
         while (len(Candidates) > 0):
-            Probabilities = Pheromone.calculate_probabilities(Candidates, Pheromones, order, alpha, beta, x_dim, y_dim, heuristic)
+            Probabilities = Pheromone.calculate_probabilities(Candidates, Pheromones, order, alpha, beta, x_dim, y_dim, solution.board, heuristic)
             choice = Solution.__random_choice(Candidates, Probabilities)
             solution.place_Choice(choice, order)
             Candidates = solution.__get_candidates()

@@ -12,11 +12,11 @@ class Pheromone:
         Pheromones = [Pheromone(max_pieces) for i in range(max_pieces)]
         return Pheromones
     
-    def calculate_probabilities(Candidates: list, Pheromones: list, order: int, alpha: float, beta: float, x_dim: int, y_dim: int, heuristic: Callable[[Choice], float]):
+    def calculate_probabilities(Candidates: list, Pheromones: list, order: int, alpha: float, beta: float, x_dim: int, y_dim: int, board: list,heuristic: Callable[[Choice], float]):
         dividend = []
         sum = 0
         for i in range(0, len(Candidates)):
-            dividend.append(pow((Pheromones[i].placed * Pheromones[i].placeOrder[order]), alpha) * pow(heuristic(Candidates[i], x_dim, y_dim),beta))
+            dividend.append(pow((Pheromones[i].placed * Pheromones[i].placeOrder[order]), alpha) * pow(heuristic(Candidates[i], x_dim, y_dim, board),beta))
             sum += dividend[i]
 
         #avoid dividing by zero.

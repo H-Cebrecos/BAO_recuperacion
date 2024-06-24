@@ -9,7 +9,9 @@ TODO:
 
 * ~~añadir semillas a la parte aleatoria.~~
 
-* leerse otra vez los comentarios de la entrega y    arreglar lo que falte.
+* leerse otra vez los comentarios de la entrega y arreglar lo que falte.
+
+* todo lo de las graficas.
 
 * ~~al aco se le deverian pasar las piezas para que lo solucione, no tiene sentido ahora mismo.~~
 
